@@ -1,0 +1,5 @@
+# build image
+docker build -t image_name:tag .
+
+# build & run a container
+docker run -p 8501:8501 image_name:tag
