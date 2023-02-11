@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import streamlit as st
 
@@ -78,14 +79,21 @@ if len(player_with_most_goals) > 0:
         player_with_most_goals,
         x="Goals",
         y="Player",
-        labels={"Player": "", "Goals": "Goal Scored"},
         orientation="h",
+        range_x=[15,35],
+        labels={"Player": "", "Goals": "Goal Scored"},
         color="GoalsPerShoot",
         color_continuous_scale="viridis",
         hover_data=["Player", "Goals", "Squad", "Pos"],
         title="<b>Players with most Goals</b>",
         template="plotly_white",
+        
     )
+    fig_most_goals.update_layout(yaxis=dict(autorange="reversed"))
+    fig_most_goals.update_xaxes(tickmode="linear")
+    for goal in player_with_most_goals["Goals"]:
+        fig_most_goals.add_vline(x=goal,line_width=1, line_dash="dash", line_color="red")
+    
     st.plotly_chart(fig_most_goals, use_container_width=True)
 
 ########### MOST ASSISTS #############
@@ -99,6 +107,7 @@ if len(player_with_most_assists) > 0:
         player_with_most_assists,
         x="Assist",
         y="Player",
+        range_x=[10,20],
         color="PassComp%",
         color_continuous_scale="haline",
         labels={"Player": "", "Assist": "Assist Created"},
@@ -107,6 +116,11 @@ if len(player_with_most_assists) > 0:
         title="<b>Players with most Assist</b>",
         template="plotly_white",
     )
+    fig_most_assist.update_layout(yaxis=dict(autorange="reversed"))
+    fig_most_assist.update_xaxes(tickmode="linear")
+    for assist in player_with_most_assists["Assist"]:
+        fig_most_assist.add_vline(x=assist,line_width=1, line_dash="dash", line_color="red")
+    
     st.plotly_chart(fig_most_assist, use_container_width=True)
 
 ########### PLAYER WITH MOST SUCCESSFULL DRIBBLE #############
@@ -190,11 +204,17 @@ if len(team_with_youngest_avg_age) > 0:
         team_with_youngest_avg_age,
         x="AvgAge",
         y="Squad",
+        range_x=[23,25],
         labels={"Squad": "", "AvgAge": "Age Average in Years Old"},
         orientation="h",
         title="<b>Teams with youngest average of age</b>",
         template="plotly_white",
     )
+
+    fig_most_youngest_team.update_xaxes(tickmode="array", tickvals=np.arange(23,25,0.1))
+    for avg in team_with_youngest_avg_age["AvgAge"]:
+        fig_most_youngest_team.add_vline(x=avg, line_width=1, line_dash="dash", line_color="red")
+
     st.plotly_chart(fig_most_youngest_team, use_container_width=True)
 
 ########### MOST OLDEST TEAMS #############
@@ -208,11 +228,17 @@ if len(team_with_oldest_avg_age) > 0:
         team_with_oldest_avg_age,
         x="AvgAge",
         y="Squad",
+        range_x=[27,30],
         labels={"Squad": "", "AvgAge": "Age Average in Years Old"},
         orientation="h",
         title="<b>Teams with oldest average of age</b>",
         template="plotly_white",
     )
+
+    fig_most_oldest_team.update_layout(yaxis=dict(autorange="reversed"))
+    fig_most_oldest_team.update_xaxes(tickmode="array", tickvals=np.arange(27,30,0.1))
+    for avg in team_with_oldest_avg_age["AvgAge"]:
+        fig_most_oldest_team.add_vline(x=avg, line_width=1, line_dash="dash", line_color="red")
     st.plotly_chart(fig_most_oldest_team, use_container_width=True)
 
 # Top teams with most minutes played by young players (20 years and below) ##########
